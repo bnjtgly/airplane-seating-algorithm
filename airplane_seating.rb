@@ -17,25 +17,25 @@ class AirplaneSeating
       max_column_size = @column + column_size
 
       for row in 1 .. row_size
-        if index == 0
-          @result.push([row, 1, "2-Window Seat"], [row, column_size, "1-Aisle Seat"])
-        elsif index == (container.length - 1)
-          @result.push([row, (@column + 1), "1-Aisle Seat"], [row, max_column_size, "2-Window Seat"])
+        if index.eql?0
+          @result << [row, 1, "2-WS"] << [row, column_size, "1-AS"]
+        elsif index.eql?(container.length - 1)
+          @result << [row, (@column + 1), "1-AS"] << [row, max_column_size, "2-WS"]
         else
-          @result.push([row, (@column + 1), "1-Aisle Seat"], [row, max_column_size, "1-Aisle Seat"])
+          @result << [row, (@column + 1), "1-AS"] << [row, max_column_size, "1-AS"]
         end
       end
 
       if column_size > 2
         for row in 1 .. row_size
           for column in (@column + 2) .. (max_column_size - 1 )
-            @result.push([row,column, "3-Middle Seat"])
+            @result << [row,column, "3-MS"]
           end
         end
       end
       sort_record()
       @column += column_size
-      index = index + 1
+      index += 1
     end
 
     allocate_seat(passenger)
@@ -44,7 +44,7 @@ class AirplaneSeating
 
   def allocate_seat(passenger_count)
     for i in 0 .. (passenger_count - 1)
-      @passenger_seat.push(@result[i])
+      @passenger_seat << @result[i]
     end
   end
 
